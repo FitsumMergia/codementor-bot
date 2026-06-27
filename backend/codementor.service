@@ -1,0 +1,17 @@
+[Unit]
+Description=CodeMentor Telegram Bot
+After=network.target
+
+[Service]
+Type=simple
+User=codementor
+WorkingDirectory=/opt/codementor
+EnvironmentFile=/opt/codementor/.env
+ExecStart=/opt/codementor/venv/bin/python poll.py
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

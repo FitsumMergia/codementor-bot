@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeMentor — Learn Python &amp; JavaScript by Chatting</title>
+    <meta name="description" content="Free AI coding tutor on Telegram. Learn Python and JavaScript through hands-on exercises with instant AI feedback. No app download needed.">
+    <meta property="og:title" content="CodeMentor — AI Coding Tutor on Telegram">
+    <meta property="og:description" content="Learn Python & JavaScript for free. AI grades your code in real time.">
+    <meta property="og:type" content="website">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+    <style>
+        :root {
+            --bg: #0a0e17;
+            --surface: #131927;
+            --border: #1e293b;
+            --text: #e2e8f0;
+            --muted: #94a3b8;
+            --accent: #38bdf8;
+            --accent2: #a78bfa;
+            --green: #4ade80;
+            --orange: #fb923c;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ── Nav ──────────────────────────────────── */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .logo { font-size: 1.4rem; font-weight: 700; }
+        .logo span { color: var(--accent); }
+        nav a {
+            color: var(--bg);
+            background: var(--accent);
+            padding: 0.5rem 1.2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: opacity 0.2s;
+        }
+        nav a:hover { opacity: 0.85; }
+
+        /* ── Hero ─────────────────────────────────── */
+        .hero {
+            text-align: center;
+            padding: 4rem 1.5rem 3rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .hero .badge {
+            display: inline-block;
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            color: var(--accent);
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+        }
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            line-height: 1.2;
+            margin-bottom: 1.2rem;
+        }
+        .hero h1 .highlight { color: var(--accent); }
+        .hero p {
+            font-size: 1.15rem;
+            color: var(--muted);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+        .cta-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.85rem 2rem;
+            border-radius: 10px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: transform 0.15s, box-shadow 0.15s;
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(56,189,248,0.25); }
+        .btn-primary { background: var(--accent); color: var(--bg); }
+        .btn-outline {
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        /* ── Phone mockup ─────────────────────────── */
+        .phone-section {
+            padding: 2rem 1.5rem 4rem;
+            display: flex;
+            justify-content: center;
+        }
+        .phone {
+            background: var(--surface);
+            border: 2px solid var(--border);
+            border-radius: 24px;
+            width: 340px;
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+        }
+        .phone-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 0.8rem;
+        }
+        .phone-header .avatar {
+            width: 32px; height: 32px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.9rem;
+        }
+        .phone-header .name { font-weight: 600; font-family: -apple-system, sans-serif; }
+        .chat { display: flex; flex-direction: column; gap: 0.5rem; }
+        .msg {
+            padding: 0.6rem 0.8rem;
+            border-radius: 12px;
+            max-width: 85%;
+            font-family: -apple-system, sans-serif;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+        .msg.bot { background: #1a2332; align-self: flex-start; }
+        .msg.user { background: #2563eb; align-self: flex-end; color: white; }
+        .msg code {
+            background: rgba(255,255,255,0.1);
+            padding: 0.1rem 0.3rem;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+        }
+        .msg .score { color: var(--green); font-weight: 700; }
+
+        /* ── Features ─────────────────────────────── */
+        .features {
+            padding: 4rem 1.5rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .features h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        .features .sub {
+            text-align: center;
+            color: var(--muted);
+            margin-bottom: 3rem;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 1.5rem;
+        }
+        .card .icon {
+            font-size: 2rem;
+            margin-bottom: 0.8rem;
+        }
+        .card h3 { margin-bottom: 0.5rem; font-size: 1.1rem; }
+        .card p { color: var(--muted); font-size: 0.9rem; }
+
+        /* ── Tracks ───────────────────────────────── */
+        .tracks {
+            padding: 4rem 1.5rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .tracks h2 { text-align: center; font-size: 2rem; margin-bottom: 2rem; }
+        .track-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        .track-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .track-card .emoji { font-size: 3rem; margin-bottom: 0.5rem; }
+        .track-card h3 { font-size: 1.3rem; margin-bottom: 0.3rem; }
+        .track-card .count { color: var(--accent); font-weight: 600; }
+        .track-card .topics { color: var(--muted); font-size: 0.85rem; margin-top: 0.5rem; }
+
+        /* ── Pricing ──────────────────────────────── */
+        .pricing {
+            padding: 4rem 1.5rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .pricing h2 { text-align: center; font-size: 2rem; margin-bottom: 2rem; }
+        .price-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
+        .price-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .price-card.featured { border-color: var(--accent); position: relative; }
+        .price-card.featured::before {
+            content: 'POPULAR';
+            position: absolute;
+            top: -10px; left: 50%; transform: translateX(-50%);
+            background: var(--accent);
+            color: var(--bg);
+            padding: 0.2rem 0.8rem;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+        .price-card h3 { margin-bottom: 0.3rem; }
+        .price-card .price {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0.5rem 0;
+        }
+        .price-card .price span { font-size: 0.9rem; color: var(--muted); font-weight: 400; }
+        .price-card ul {
+            list-style: none;
+            text-align: left;
+            margin: 1rem 0;
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
+        .price-card ul li { padding: 0.3rem 0; }
+        .price-card ul li::before { content: '✓ '; color: var(--green); }
+
+        /* ── Social proof ─────────────────────────── */
+        .social {
+            padding: 3rem 1.5rem;
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .stats-row {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+        }
+        .stat { text-align: center; }
+        .stat .num { font-size: 2.5rem; font-weight: 700; color: var(--accent); }
+        .stat .label { color: var(--muted); font-size: 0.9rem; }
+
+        /* ── Final CTA ────────────────────────────── */
+        .final-cta {
+            text-align: center;
+            padding: 4rem 1.5rem 5rem;
+        }
+        .final-cta h2 { font-size: 2rem; margin-bottom: 1rem; }
+        .final-cta p { color: var(--muted); margin-bottom: 2rem; }
+
+        /* ── Footer ───────────────────────────────── */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--muted);
+            font-size: 0.8rem;
+            border-top: 1px solid var(--border);
+        }
+
+        /* ── Mobile ───────────────────────────────── */
+        @media (max-width: 640px) {
+            .price-grid { grid-template-columns: 1fr; }
+            .track-cards { grid-template-columns: 1fr; }
+            .stats-row { gap: 2rem; }
+            .phone { width: 100%; max-width: 340px; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="logo">Code<span>Mentor</span></div>
+    <a href="https://t.me/ByteTutorAI_Bot">Start Learning Free</a>
+</nav>
+
+<section class="hero">
+    <div class="badge">100% Free to Start &bull; No App Download</div>
+    <h1>Learn to code by <span class="highlight">chatting</span></h1>
+    <p>CodeMentor is an AI tutor on Telegram that teaches Python and JavaScript through hands-on exercises. Write code, get instant feedback, level up.</p>
+    <div class="cta-group">
+        <a href="https://t.me/ByteTutorAI_Bot" class="btn btn-primary">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/></svg>
+            Start on Telegram
+        </a>
+        <a href="#features" class="btn btn-outline">See how it works</a>
+    </div>
+</section>
+
+<section class="phone-section">
+    <div class="phone">
+        <div class="phone-header">
+            <div class="avatar">🎓</div>
+            <div class="name">CodeMentor AI</div>
+        </div>
+        <div class="chat">
+            <div class="msg bot"><b>Lesson 2 — Variables</b><br>A variable is like a labelled box.<br><code>fav = 7</code><br>Your turn: store your favourite number and print it.</div>
+            <div class="msg user">fav = 42<br>print("My number is", fav)</div>
+            <div class="msg bot"><span class="score">&#10003; Score: 100/100</span><br>Great job! You used a variable and printed it perfectly. Try an f-string next time.</div>
+            <div class="msg bot">&#128640; Send /next for lesson 3.</div>
+        </div>
+    </div>
+</section>
+
+<section class="features" id="features">
+    <h2>Why CodeMentor works</h2>
+    <p class="sub">Built for people who want to learn coding but don't know where to start.</p>
+    <div class="grid">
+        <div class="card">
+            <div class="icon">&#128172;</div>
+            <h3>Learn by chatting</h3>
+            <p>No IDE, no laptop needed. Write code right in Telegram and get instant AI feedback on your phone.</p>
+        </div>
+        <div class="card">
+            <div class="icon">&#129302;</div>
+            <h3>AI reads your code</h3>
+            <p>Not just right/wrong — the AI explains what's good, what to fix, and teaches you the why.</p>
+        </div>
+        <div class="card">
+            <div class="icon">&#128161;</div>
+            <h3>Hints when you're stuck</h3>
+            <p>3-level progressive hints per exercise. From gentle nudge to near-answer — without giving it away.</p>
+        </div>
+        <div class="card">
+            <div class="icon">&#128293;</div>
+            <h3>Streaks keep you going</h3>
+            <p>Daily streak tracking, milestone rewards, and a leaderboard to compete with friends.</p>
+        </div>
+        <div class="card">
+            <div class="icon">&#127793;</div>
+            <h3>Start from zero</h3>
+            <p>Lessons assume no prior experience. From "Hello World" to building games — one step at a time.</p>
+        </div>
+        <div class="card">
+            <div class="icon">&#127760;</div>
+            <h3>Works on 2G</h3>
+            <p>Text-only chat uses minimal data. Works on any phone that has Telegram — even basic Android.</p>
+        </div>
+    </div>
+</section>
+
+<section class="tracks" id="tracks">
+    <h2>Choose your track</h2>
+    <div class="track-cards">
+        <div class="track-card">
+            <div class="emoji">&#128013;</div>
+            <h3>Python</h3>
+            <div class="count">30 lessons</div>
+            <div class="topics">Variables &bull; Loops &bull; Functions &bull; Classes &bull; Files &bull; Games</div>
+        </div>
+        <div class="track-card">
+            <div class="emoji">&#129000;</div>
+            <h3>JavaScript</h3>
+            <div class="count">15 lessons</div>
+            <div class="topics">Console &bull; Arrays &bull; Objects &bull; async/await &bull; FizzBuzz</div>
+        </div>
+    </div>
+</section>
+
+<section class="pricing" id="pricing">
+    <h2>Simple pricing</h2>
+    <div class="price-grid">
+        <div class="price-card">
+            <h3>Free</h3>
+            <div class="price">ETB 0</div>
+            <ul>
+                <li>3 AI reviews per day</li>
+                <li>All 45 lessons</li>
+                <li>Hints &amp; reference</li>
+                <li>Streaks &amp; leaderboard</li>
+            </ul>
+            <a href="https://t.me/ByteTutorAI_Bot" class="btn btn-outline" style="width:100%">Start Free</a>
+        </div>
+        <div class="price-card featured">
+            <h3>Standard</h3>
+            <div class="price">ETB 199<span>/month</span></div>
+            <ul>
+                <li>15 AI reviews per day</li>
+                <li>Detailed feedback</li>
+                <li>All 45 lessons</li>
+                <li>Priority support</li>
+            </ul>
+            <a href="https://t.me/ByteTutorAI_Bot" class="btn btn-primary" style="width:100%">Get Standard</a>
+        </div>
+        <div class="price-card">
+            <h3>Pro</h3>
+            <div class="price">ETB 399<span>/month</span></div>
+            <ul>
+                <li>Unlimited reviews</li>
+                <li>Deep AI code review</li>
+                <li>Certificate of completion</li>
+                <li>All features</li>
+            </ul>
+            <a href="https://t.me/ByteTutorAI_Bot" class="btn btn-outline" style="width:100%">Get Pro</a>
+        </div>
+    </div>
+</section>
+
+<section class="social">
+    <div class="stats-row">
+        <div class="stat">
+            <div class="num">45</div>
+            <div class="label">Lessons</div>
+        </div>
+        <div class="stat">
+            <div class="num">2</div>
+            <div class="label">Languages</div>
+        </div>
+        <div class="stat">
+            <div class="num">0</div>
+            <div class="label">Cost to start</div>
+        </div>
+    </div>
+</section>
+
+<section class="final-cta">
+    <h2>Ready to write your first line of code?</h2>
+    <p>Takes 30 seconds. No sign-up, no download. Just open Telegram and say /start.</p>
+    <a href="https://t.me/ByteTutorAI_Bot" class="btn btn-primary" style="font-size:1.2rem;padding:1rem 3rem">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/></svg>
+        Start Learning on Telegram
+    </a>
+</section>
+
+<footer>
+    &copy; 2026 CodeMentor AI &bull; Built in Ethiopia &bull; <a href="https://t.me/ByteTutorAI_Bot" style="color:var(--accent)">t.me/ByteTutorAI_Bot</a>
+</footer>
+
+</body>
+</html>

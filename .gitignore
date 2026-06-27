@@ -1,0 +1,19 @@
+# Secrets — NEVER commit
+backend/.env
+backend/*.db
+backend/*.db.bak
+backend/_b64.txt
+Telegram_bot.txt
+gmail_Account.txt
+ethiovib_server.txt
+Gemini API Key.txt
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# OS
+.DS_Store
+Thumbs.db

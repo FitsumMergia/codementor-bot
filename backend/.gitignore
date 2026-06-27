@@ -1,0 +1,11 @@
+.env
+*.db
+*.db.bak
+__pycache__/
+*.pyc
+.venv/
+venv/
+Telegram_bot.txt
+gmail_Account.txt
+ethiovib_server.txt
+Gemini API Key.txt

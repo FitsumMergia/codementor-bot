@@ -1,0 +1,13 @@
+name = "codementor-relay"
+main = "worker.js"
+compatibility_date = "2026-01-01"
+
+# Set these as secrets (NOT in this file):
+#   wrangler secret put TELEGRAM_SECRET_TOKEN
+#   wrangler secret put BACKEND_URL
+#
+# Deploy:
+#   npx wrangler deploy
+#
+# Then point Telegram at the Worker:
+#   python set_webhook.py https://codementor-relay.<your-subdomain>.workers.dev
