@@ -1,0 +1,23 @@
+services:
+  - type: worker
+    name: codementor-bot
+    runtime: python
+    buildCommand: cd backend && pip install -r requirements.txt
+    startCommand: cd backend && python poll.py
+    envVars:
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: TELEGRAM_SECRET_TOKEN
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: DATABASE_URL
+        value: sqlite:///./codementor.db
+      - key: ADMIN_TOKEN
+        sync: false
+      - key: ADMIN_CHAT_ID
+        sync: false
+      - key: SSL_VERIFY
+        value: "true"
+      - key: PYTHONUNBUFFERED
+        value: "1"
